@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mario>
+	<name>NhoAdmin</name>
+
+	<servers>
+		<http>
+			<name>admin_http_server</name>
+			<port>9310</port>
+			<options>no_sessions</options>
+		</http>
+		<rabbitmq>
+			<name>admin_uams_rabbitmq_server</name>
+			<endpoint>
+				<entry>127.0.0.1:5672</entry>
+			</endpoint>
+			<credential>
+				<username>guest</username>
+				<password>guest</password>
+			</credential>
+			<autoreconnect>true</autoreconnect>
+		</rabbitmq>
+	</servers>
+	
+	<producers>
+		<rabbitmq>
+			<name>admin_uams_rabbitmq_producer</name>
+			<server>admin_uams_rabbitmq_server</server>
+			<timeout>5000</timeout>
+			<queue>
+				<type>rpc</type>
+				<name>log_queue</name>
+				<autoack>true</autoack>
+			</queue>
+		</rabbitmq>
+	</producers>
+	
+	<gateways>
+		<http>
+			<name>admin_http_gateway</name>
+			<server>admin_http_server</server>
+			<path>/nho/admin/*</path>
+			<async>true</async>
+			<workerpool>
+				<poolsize>8</poolsize>
+				<ringbuffersize>2048</ringbuffersize>
+				<threadnamepattern>Nho Admin Worker #%d</threadnamepattern>
+			</workerpool>
+		</http>
+	</gateways>
+
+	<lifecycles>
+		<handler>
+			<name>adminHandler</name>
+			<handle>com.nho.admin.NhoAdminHandler</handle>
+			<bind>
+				<gateway>admin_http_gateway</gateway>
+			</bind>
+			<variables>
+				<variable name="application_id" type="String">b7d2a54c-65f9-11e6-8b77-86f30ca893d3</variable>
+			</variables>
+		</handler>
+	</lifecycles>
+</mario>

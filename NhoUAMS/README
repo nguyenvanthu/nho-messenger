@@ -1,0 +1,4 @@
+1. using cassandra store logs : 
+	. install cassandra 
+	. start cassandra (with server 8G ram -> cassandra : >= 2G ram) 
+	. create table before using it : create int command line (cqlsh ) or create by code

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta property="al:android:app_name" content="Nhớ Messenger" />
+  <meta property="al:android:package" content="com.twio.messenger.nho" />
+  <meta property="al:android:url" content="https://nhomessenger.com/chat">
+  <title>Nhớ Messenger</title>
+  <link href="stylesheets/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400italic,100,700italic,300,700,100italic,300italic,400&amp;subset=latin,vietnamese" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,100" rel="stylesheet" type="text/css">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" name="viewport">
+  <meta charset="UTF-8">
+  <link rel="icon" 
+        type="image/png" 
+        href="https://lh3.googleusercontent.com/nHV1zvXueEOhsXbfTkBD50i4dwfYYgSUWX0tHo7ecV7o1S9YH1_Mc08meHTZtODSNQ=w24" />
+</head>
+<body>
+  <div class="frame">
+    <div class="phone">
+      <div class="header">
+        <span class="display-name">Nhớ</span>
+      </div>
+      <div class="window">
+        <div class="sound-wrapper">
+        </div>
+        <div class="bubble-wrapper">
+        </div>
+        <div class="avatar-halo"></div>
+        <canvas height="928" id="canvas" width="596"></canvas>
+        <div class="avatar avatar--has-image shaking"><span class="placeholder">T</span><img class="real-image" src="https://lh3.googleusercontent.com/nHV1zvXueEOhsXbfTkBD50i4dwfYYgSUWX0tHo7ecV7o1S9YH1_Mc08meHTZtODSNQ=w100-rw"></div>
+        <div class="controls">
+          <span class="button-wrapper sticker"><img class="button-icon" src="images/nho-sticker.png"></span>
+          <span class="button-wrapper bubble-chat"><img class="button-icon" src="images/ic_chat_black_24dp_2x.png"></span>
+          <span class="button-wrapper shake"><img class="button-icon" src="images/nho-shake.png"></span>
+          <span class="button-wrapper ve-dong-lai"><img class="button-icon" src="images/nho-ve-dong-lai.png"></span>
+        </div>
+        <span class="button-wrapper delete-objs"><img class="button-icon" src="images/ic_delete_forever_black_24dp_2x.png"></span>
+        <div class="error-wrapper error-wrapper--shown">
+          <div class="error-message">
+            Đợt một lát...
+          </div>
+          <div class="poke-wrapper">
+            <div>
+              Bấm nút để í ới<span class="poke-name"></span>&nbsp;lên chat.
+            </div>
+            <div class="button-wrapper poke"><img class="button-icon" src="images/ic_vibration_white_24dp_2x.png"></div>
+          </div>
+        </div>
+        <input class="bubble-input" type="text">
+      </div>
+    </div>
+  </div>
+  <div class="upsell">
+    <div class="shoutout">
+      Nhớ lợi hại hơn nhiều nếu chat bằng app.
+    </div>
+    <a target="_blank" href="https://play.google.com/store/apps/details?id=com.twio.messenger.nho"><img class="badge" src="images/google-play-badge.png" onclick="ga('send', 'event', 'Referral', 'Play Store');"></a>
+    <div class="ios-wrapper">
+      <span class="ios">
+        iOS đang trong lò phát triển. Trong lúc đợi, bạn có thể dùng link này để tiếp tục chat trên iPhone:
+        <input type="text" class="inline-link" onclick="ga('send', 'event', 'Referral', 'Web copy');">
+      </span>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js">
+  </script>
+  <script src="javascripts/base64.js">
+  </script>
+  <script src="javascripts/vetuantu.js">
+  </script>
+  <script src="javascripts/vesticker.js">
+  </script>
+  <script src="javascripts/gopthongtin.js">
+  </script>
+  <script src="javascripts/noichuyenvoiserver.js">
+  </script>
+  <script src="javascripts/vebinhthuong.js">
+  </script>
+  <script src="javascripts/vedonglai.js">
+  </script>
+  <script src="javascripts/vesongamthanh.js">
+  </script>
+  <script src="javascripts/chatbubble.js">
+  </script>
+  <script src="javascripts/analytics.js">
+  </script>
+</body>
+</html>

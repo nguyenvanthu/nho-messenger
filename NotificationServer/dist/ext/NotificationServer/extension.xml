@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mario>
+
+	<name>NotificationServer</name>
+
+	<datasources>
+		<hazelcast>
+			<name>notification_hazelcast</name>
+			<config>conf/hazelcast.xml</config>
+			<member>true</member>
+		</hazelcast>
+		<mongodb>
+			<name>notification_mongodb</name>
+			<endpoint>
+				<entry>127.0.0.1:27017</entry>
+			</endpoint>
+			<credentials>
+<!-- 				<entry> -->
+<!-- 					<username>nho</username> -->
+<!-- 					<password>123456</password> -->
+<!-- 					<authdb>nho</authdb> -->
+<!-- 				</entry> -->
+			</credentials>
+		</mongodb>
+	</datasources>
+
+	<servers>
+		<http>
+			<name>notification_http_server</name>
+			<port>9305</port>
+			<options>no_sessions</options>
+		</http>
+		<rabbitmq>
+			<name>notification_rabbitmq_server</name>
+			<endpoint>
+				<entry>127.0.0.1:5672</entry>
+			</endpoint>
+			<credential>
+				<username>guest</username>
+				<password>guest</password>
+			</credential>
+			<autoreconnect>true</autoreconnect>
+		</rabbitmq>
+	</servers>
+
+	<gateways>
+		<http>
+			<name>notification_http_gateway</name>
+			<server>notification_http_server</server>
+			<path>/*</path>
+		</http>
+		<rabbitmq>
+			<name>notification_rabbitmq_gateway</name>
+			<server>notification_rabbitmq_server</server>
+			<queue>
+				<type>rpc</type>
+				<name>notification_queue</name>
+				<autoack>true</autoack>
+			</queue>
+			<workerpool>
+				<poolsize>8</poolsize>
+				<ringbuffersize>2048</ringbuffersize>
+				<threadnamepattern>Notification Worker #%d</threadnamepattern>
+			</workerpool>
+		</rabbitmq>
+	</gateways>
+
+	<lifecycles>
+		<handler>
+			<name>notification_handler</name>
+			<handle>com.nho.notification.NotificationHandler</handle>
+			<bind>
+				<gateway>notification_rabbitmq_gateway</gateway>
+				<gateway>notification_http_gateway</gateway>
+			</bind>
+			<variables>
+				<variable name="mongodb" type="String">notification_mongodb</variable>
+				<variable name="hazelcast" type="String">notification_hazelcast</variable>
+				<variable name="hermesHost" type="String">http://127.0.0.1:8801/hermes2/</variable>
+				<variable name="modeTest" type="boolean">true</variable>
+			</variables>
+		</handler>
+	</lifecycles>
+</mario>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Mario"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NHBCommon"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NHBCommonDB"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NhoAPI"/>
+	<classpathentry kind="lib" path="lib/guava-18.0.jar"/>
+	<classpathentry kind="lib" path="lib/joda-time-2.3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

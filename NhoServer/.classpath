@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SLF4J_API"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NHBCommonMessaging"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NhoAPI"/>
+	<classpathentry kind="lib" path="lib-local/hazelcast-all-3.5.3.jar" sourcepath="lib-local/hazelcast-all-3.5.3.jar"/>
+	<classpathentry kind="lib" path="lib-local/jdbi-2.62.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.7.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NHBCommon"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Mario"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NHBCommonDB"/>
+	<classpathentry kind="lib" path="/NHBCommonMessaging/lib/httpasyncclient-4.1.1.jar"/>
+	<classpathentry kind="lib" path="/NHBCommonMessaging/lib/httpclient-4.5.1.jar"/>
+	<classpathentry kind="lib" path="/NHBCommonMessaging/lib/httpcore-4.4.4.jar"/>
+	<classpathentry kind="lib" path="/NHBCommonMessaging/lib/httpcore-nio-4.4.4.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NhoTracking"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ChatServer"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/FriendServer"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/NotificationServer"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

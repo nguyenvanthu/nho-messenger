@@ -1,0 +1,17 @@
+If we want to use Kafka : 
+	. install zookeeper && kafka 
+	. start zookeeper : bin/zookeeper-server-start.sh config/zookeeper.properties &
+	. start kafka : /bin/kafka-server-start.sh -daemon /config/server.properties
+	. create topic (in this project , topic is : nho.uams ) :
+	 			bin/kafka-topics.sh --create --zookeeper localhost:2181 
+	 			--replication-factor 1 --partitions 2 --topic nho.uams
+	. or create topic by code 
+	. view list topic : bin/kafka-topics.sh --list --zookeeper localhost:2181
+	. test kafka consumer : bin/kafka-console-consumer.sh --zookeeper
+							 localhost:2181 --topic nho.uams --from-beginning
+	. test kafka producer :  bin/kafka-console-producer.sh --broker-list 
+							localhost:9092 --topic nho.uams
+ If we have >= 2 kafka broker : 
+ 	. make 2 file config for 2 broker 
+ 	. start 2 broker 
+ 	. create topic 

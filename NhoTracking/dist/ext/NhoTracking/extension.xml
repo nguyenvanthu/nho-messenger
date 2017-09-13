@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mario>
+
+	<name>NhoTracking</name>
+
+	<datasources>
+		<mongodb>
+			<name>tracking_mongodb</name>
+			<endpoint>
+				<entry>127.0.0.1:27017</entry>
+			</endpoint>
+			<credentials>
+			</credentials>
+		</mongodb>
+	</datasources>
+
+	<servers>
+		<http>
+			<name>tracking_http_server</name>
+			<port>9306</port>
+			<options>no_sessions</options>
+		</http>
+	</servers>
+
+	<gateways>
+		<http>
+			<name>tracking_http_gateway</name>
+			<server>tracking_http_server</server>
+			<path>/*</path>
+		</http>
+	</gateways>
+
+	<lifecycles>
+		<handler>
+			<name>tracking_handler</name>
+			<handle>com.nho.tracking.NhoTrackingHandler</handle>
+			<bind>
+				<gateway>tracking_http_gateway</gateway>
+			</bind>
+			<variables>
+				<variable name="mongodb" type="String">tracking_mongodb</variable>
+			</variables>
+		</handler>
+	</lifecycles>
+</mario>

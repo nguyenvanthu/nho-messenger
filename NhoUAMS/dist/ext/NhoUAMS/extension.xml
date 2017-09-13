@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mario>
+	<name>NhoUAMS</name>
+
+	<datasources>
+		<cassandra>
+			<name>nho_uams_cassandra</name>
+			<keyspace>nho_uams</keyspace>
+			<endpoint>
+				<entry>127.0.0.1</entry>
+			</endpoint>
+		</cassandra>
+	</datasources>
+
+	<servers>
+		<http>
+			<name>uams_http_server</name>
+			<port>9308</port>
+			<options>no_sessions</options>
+		</http>
+		<rabbitmq>
+			<name>log_rabbitmq_server</name>
+			<endpoint>
+				<entry>127.0.0.1:5672</entry>
+			</endpoint>
+			<credential>
+				<username>guest</username>
+				<password>guest</password>
+			</credential>
+			<autoreconnect>true</autoreconnect>
+		</rabbitmq>
+	</servers>
+
+	<gateways>
+		<http>
+			<name>uams_http_gateway</name>
+			<server>uams_http_server</server>
+			<path>/uams</path>
+			<async>true</async>
+			<workerpool>
+				<poolsize>8</poolsize>
+				<ringbuffersize>2048</ringbuffersize>
+				<threadnamepattern>UAMS Worker #%d</threadnamepattern>
+			</workerpool>
+		</http>
+
+		<http>
+			<name>uams_http_gateway_res</name>
+			<server>uams_http_server</server>
+			<path>/uams/res</path>
+			<encoding>utf-8</encoding>
+			<deserializer>com.mario.entity.message.transcoder.http.JsonBodyHttpMessageDeserializer
+			</deserializer>
+			<async>true</async>
+			<workerpool>
+				<poolsize>8</poolsize>
+				<ringbuffersize>2048</ringbuffersize>
+				<threadnamepattern>UAMS Worker #%d</threadnamepattern>
+			</workerpool>
+		</http>
+
+		<kafka>
+			<name>nho_uams_kafka_gateway</name>
+			<config>conf/uams_consumer.properties</config>
+			<pollTimeout>100</pollTimeout>
+			<topics>nho.uams</topics>
+			<workerpool>
+				<poolsize>8</poolsize>
+				<ringbuffersize>2048</ringbuffersize>
+				<threadnamepattern>UAMS Kafka Worker #%d</threadnamepattern>
+			</workerpool>
+		</kafka>
+
+		<rabbitmq>
+			<name>log_rabbitmq_gateway</name>
+			<server>log_rabbitmq_server</server>
+			<queue>
+				<type>rpc</type>
+				<name>log_queue</name>
+				<autoack>true</autoack>
+			</queue>
+			<workerpool>
+				<poolsize>8</poolsize>
+				<ringbuffersize>2048</ringbuffersize>
+				<threadnamepattern>Logging Worker #%d</threadnamepattern>
+			</workerpool>
+		</rabbitmq>
+	</gateways>
+
+	<lifecycles>
+		<handler>
+			<name>uamsHandler</name>
+			<handle>com.nho.uams.UAMSHandler</handle>
+			<bind>
+				<gateway>log_rabbitmq_gateway</gateway>
+				<gateway>nho_uams_kafka_gateway</gateway>
+				<gateway>uams_http_gateway</gateway>
+				<gateway>uams_http_gateway_res</gateway>
+			</bind>
+			<variables>
+				<variable name="cassandra" type="string">nho_uams_cassandra
+				</variable>
+				<variable name="topic" type="string">nho.uams</variable>
+			</variables>
+		</handler>
+	</lifecycles>
+</mario>

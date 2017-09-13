@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mario>
+
+	<name>NhoVersionChecking</name>
+
+
+	<datasources>
+		<mongodb>
+			<name>version_mongodb</name>
+			<endpoint>
+				<entry>127.0.0.1:27017</entry>
+			</endpoint>
+			<credentials>
+			</credentials>
+		</mongodb>
+	</datasources>
+	<servers>
+		<http>
+			<name>versionChecking_http_server</name>
+			<port>9307</port>
+			<options>no_sessions</options>
+		</http>
+	</servers>
+
+	<gateways>
+		<http>
+			<name>versionChecking_http_gateway</name>
+			<server>versionChecking_http_server</server>
+			<path>/version/*</path>
+		</http>
+	</gateways>
+
+	<lifecycles>
+		<handler>
+			<name>version_checking_handler</name>
+			<handle>com.nho.version.VersionCheckingHandler</handle>
+			<bind>
+				<gateway>versionChecking_http_gateway</gateway>
+			</bind>
+			<variables>
+				<variable name="mongodb" type="String">version_mongodb</variable>
+			</variables>
+		</handler>
+	</lifecycles>
+</mario>

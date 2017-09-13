@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mario>
+
+	<name>FriendServer</name>
+
+	<datasources>
+	<hazelcast>
+			<name>friend_hazelcast</name>
+			<config>conf/hazelcast.xml</config>
+			<member>true</member>
+		</hazelcast>
+		<mongodb>
+			<name>friend_mongodb</name>
+			<endpoint>
+				<entry>127.0.0.1:27017</entry>
+			</endpoint>
+			<credentials>
+<!-- 				<entry> -->
+<!-- 					<username>nho</username> -->
+<!-- 					<password>123456</password> -->
+<!-- 					<authdb>nho</authdb> -->
+<!-- 				</entry> -->
+			</credentials>
+		</mongodb>
+	</datasources>
+
+	<servers>
+		<http>
+			<name>friend_http_server</name>
+			<port>9303</port>
+			<options>no_sessions</options>
+		</http>
+		<rabbitmq>
+			<name>friend_rabbitmq_server</name>
+			<endpoint>
+				<entry>127.0.0.1:5672</entry>
+			</endpoint>
+			<credential>
+				<username>guest</username>
+				<password>guest</password>
+			</credential>
+			<autoreconnect>true</autoreconnect>
+		</rabbitmq>
+	</servers>
+
+	<gateways>
+		<http>
+			<name>friend_http_gateway</name>
+			<server>friend_http_server</server>
+			<path>/*</path>
+		</http>
+		<rabbitmq>
+			<name>friend_rabbitmq_gateway</name>
+			<server>friend_rabbitmq_server</server>
+			<queue>
+				<type>rpc</type>
+				<name>friend_queue</name>
+				<autoack>true</autoack>
+			</queue>
+			<workerpool>
+				<poolsize>8</poolsize>
+				<ringbuffersize>2048</ringbuffersize>
+				<threadnamepattern>Friend Worker #%d</threadnamepattern>
+			</workerpool>
+		</rabbitmq>
+	</gateways>
+
+	<lifecycles>
+		<handler>
+			<name>friend_handler</name>
+			<handle>com.nho.friend.FriendHandler</handle>
+			<bind>
+				<gateway>friend_rabbitmq_gateway</gateway>
+				<gateway>friend_http_gateway</gateway>
+			</bind>
+			<variables>
+				<variable name="hazelcast" type="String">friend_hazelcast</variable>
+				<variable name="mongodb" type="String">friend_mongodb</variable>
+			</variables>
+		</handler>
+	</lifecycles>
+</mario>

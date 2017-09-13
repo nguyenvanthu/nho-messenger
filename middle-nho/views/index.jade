@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  div.frame
+    div.phone
+      div.header
+        span.display-name
+          | Nhớ
+      div.window
+        div.bubble-wrapper
+        div.avatar-halo
+        canvas#canvas
+        div.avatar.avatar--has-image.shaking
+          span.placeholder
+            | T
+          img.real-image(src='//lh3.googleusercontent.com/nHV1zvXueEOhsXbfTkBD50i4dwfYYgSUWX0tHo7ecV7o1S9YH1_Mc08meHTZtODSNQ=w100-rw')
+        div.controls
+          span.button-wrapper.sticker
+            img.button-icon(src='/images/nho-sticker.png')
+          span.button-wrapper.shake
+            img.button-icon(src='/images/nho-shake.png')
+          span.button-wrapper.ve-dong-lai
+            img.button-icon(src='/images/nho-ve-dong-lai.png')
+          span.button-wrapper.delete-objs
+            img.button-icon(src='/images/ic_delete_forever_black_24dp_2x.png')
+        div.error-wrapper
+          div.error-message
+            Đợt một lát...
+          div.poke-wrapper
+            div
+              | Bấm nút để í ới
+              span.poke-name
+              | &nbsplên chat.
+            div.button-wrapper.poke
+              img.button-icon(src='/images/ic_vibration_white_24dp_2x.png')
+        input.bubble-input(type="text")
+    br

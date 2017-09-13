@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mario>
+
+	<name>NhoFileSharing</name>
+
+	<datasources>
+		<mongodb>
+			<name>file_mongodb</name>
+			<endpoint>
+				<entry>127.0.0.1:27017</entry>
+			</endpoint>
+			<credentials>
+			</credentials>
+		</mongodb>
+		<hazelcast>
+			<name>nho_file_hazelcast</name>
+			<config>conf/hazelcast.xml</config>
+			<member>true</member>
+		</hazelcast>
+	</datasources>
+
+	<servers>
+		<http>
+			<name>file_http_server</name>
+			<port>9304</port>
+			<options>no_sessions</options>
+		</http>
+		<rabbitmq>
+			<name>file_rabbitmq_server</name>
+			<endpoint>
+				<entry>127.0.0.1:5672</entry>
+			</endpoint>
+			<credential>
+				<username>guest</username>
+				<password>guest</password>
+			</credential>
+			<autoreconnect>true</autoreconnect>
+		</rabbitmq>
+	</servers>
+
+	<gateways>
+		<rabbitmq>
+			<name>file_rabbitmq_gateway</name>
+			<server>file_rabbitmq_server</server>
+			<queue>
+				<type>rpc</type>
+				<name>file_queue</name>
+				<autoack>true</autoack>
+			</queue>
+			<workerpool>
+				<poolsize>8</poolsize>
+				<ringbuffersize>2048</ringbuffersize>
+				<threadnamepattern>Nho File Worker #%d</threadnamepattern>
+			</workerpool>
+		</rabbitmq>
+		<http>
+			<name>file_http_gateway</name>
+			<server>file_http_server</server>
+			<path>/nho/file/*</path>
+			<async>true</async>
+			<workerpool>
+				<poolsize>8</poolsize>
+				<ringbuffersize>2048</ringbuffersize>
+				<threadnamepattern>Nho File Worker #%d</threadnamepattern>
+			</workerpool>
+		</http>
+	</gateways>
+
+	<lifecycles>
+		<handler>
+			<name>file_handler</name>
+			<handle>com.nho.file.FileHandler</handle>
+			<bind>
+				<gateway>file_rabbitmq_gateway</gateway>
+				<gateway>file_http_gateway</gateway>
+			</bind>
+			<variables>
+				<variable name="mongodb" type="String">file_mongodb</variable>
+				<variable name="hazelcast" type="String">nho_file_hazelcast</variable>
+			</variables>
+		</handler>
+	</lifecycles>
+</mario>

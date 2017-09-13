@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mario>
+
+	<name>NhoServer</name>
+
+	<datasources>
+		<hazelcast>
+			<name>nho_messenger_hazelcast</name>
+			<config>conf/hazelcast.xml</config>
+<!-- 			<lazyinit>true</lazyinit> -->
+			<member>true</member>
+		</hazelcast>
+		<sql>
+			<name>nho_messenger_mysql</name>
+			<variables>
+				<variable name="url" type="string">jdbc:mysql://127.0.0.1:3306/nho
+				</variable>
+				<variable name="driverClassName" type="string">com.mysql.jdbc.Driver
+				</variable>
+				<variable name="username" type="string">root</variable>
+				<variable name="password" type="string">123456</variable>
+				<!-- <variable name="validatorClassName" type="string"></variable> -->
+				<variable name="minPool" type="integer">4</variable>
+				<variable name="maxPool" type="integer">32</variable>
+				<!-- <variable name="maxSize" type="integer"></variable> -->
+				<variable name="idleTimeout" type="integer">10000</variable>
+				<variable name="loginTimeout" type="integer">10000</variable>
+			</variables>
+		</sql>
+
+		<mongodb>
+			<name>nho_messenger_mongodb</name>
+			<endpoint>
+				<entry>127.0.0.1:27017</entry>
+			</endpoint>
+			<credentials>
+<!-- 				<entry> -->
+<!-- 					<username>nho</username> -->
+<!-- 					<password>123456</password> -->
+<!-- 					<authdb>nho</authdb> -->
+<!-- 				</entry> -->
+			</credentials>
+		</mongodb>
+
+	</datasources>
+
+	<servers>
+		<http>
+			<name>avatar_http_server</name>
+			<port>9302</port>
+			<options>no_sessions</options>
+		</http>
+		<rabbitmq>
+			<name>nho_friend_rabbitmq_server</name>
+			<endpoint>
+				<entry>127.0.0.1:5672</entry>
+			</endpoint>
+			<credential>
+				<username>guest</username>
+				<password>guest</password>
+			</credential>
+<!-- 			<endpoint> -->
+<!-- 				<entry>139.162.5.38:5672</entry> -->
+<!-- 			</endpoint> -->
+<!-- 			<credential> -->
+<!-- 				<username>nho</username> -->
+<!-- 				<password>nho123</password> -->
+<!-- 			</credential> -->
+			<autoreconnect>true</autoreconnect>
+		</rabbitmq>
+		<rabbitmq>
+			<name>nho_chat_rabbitmq_server</name>
+			<endpoint>
+				<entry>127.0.0.1:5672</entry>
+			</endpoint>
+			<credential>
+				<username>guest</username>
+				<password>guest</password>
+			</credential>
+<!-- 			<endpoint> -->
+<!-- 				<entry>139.162.5.38:5672</entry> -->
+<!-- 			</endpoint> -->
+<!-- 			<credential> -->
+<!-- 				<username>nho</username> -->
+<!-- 				<password>nho123</password> -->
+<!-- 			</credential> -->
+			<autoreconnect>true</autoreconnect>
+		</rabbitmq>
+		<rabbitmq>
+			<name>nho_notification_rabbitmq_server</name>
+			<endpoint>
+				<entry>127.0.0.1:5672</entry>
+			</endpoint>
+			<credential>
+				<username>guest</username>
+				<password>guest</password>
+			</credential>
+<!-- 			<endpoint> -->
+<!-- 				<entry>139.162.5.38:5672</entry> -->
+<!-- 			</endpoint> -->
+<!-- 			<credential> -->
+<!-- 				<username>nho</username> -->
+<!-- 				<password>nho123</password> -->
+<!-- 			</credential> -->
+			<autoreconnect>true</autoreconnect>
+		</rabbitmq>
+		
+		<rabbitmq>
+			<name>nho_logging_rabbitmq_server</name>
+<!-- 			<endpoint> -->
+<!-- 				<entry>127.0.0.1:5672</entry> -->
+<!-- 			</endpoint> -->
+<!-- 			<credential> -->
+<!-- 				<username>guest</username> -->
+<!-- 				<password>guest</password> -->
+<!-- 			</credential> -->
+			<endpoint>
+				<entry>139.162.60.195:5672</entry>
+			</endpoint>
+			<credential>
+				<username>nho</username>
+				<password>nho123</password>
+			</credential>
+			<autoreconnect>true</autoreconnect>
+		</rabbitmq>
+	</servers>
+	
+	<producers>
+		<rabbitmq>
+			<name>friend_rabbitmq_producer</name>
+			<server>nho_friend_rabbitmq_server</server>
+			<timeout>5000</timeout>
+			<queue>
+				<type>rpc</type>
+				<name>friend_queue</name>
+				<autoack>true</autoack>
+			</queue>
+		</rabbitmq>
+		<rabbitmq>
+			<name>chat_rabbitmq_producer</name>
+			<server>nho_chat_rabbitmq_server</server>
+			<timeout>5000</timeout>
+			<queue>
+				<type>rpc</type>
+				<name>chat_queue</name>
+				<autoack>true</autoack>
+			</queue>
+		</rabbitmq>
+		<rabbitmq>
+			<name>notification_rabbitmq_producer</name>
+			<server>nho_notification_rabbitmq_server</server>
+			<timeout>5000</timeout>
+			<queue>
+				<type>rpc</type>
+				<name>notification_queue</name>
+				<autoack>true</autoack>
+			</queue>
+		</rabbitmq>
+		<rabbitmq>
+			<name>logging_rabbitmq_producer</name>
+			<server>nho_logging_rabbitmq_server</server>
+			<timeout>5000</timeout>
+			<queue>
+				<type>rpc</type>
+				<name>log_queue</name>
+				<autoack>true</autoack>
+			</queue>
+		</rabbitmq>
+		<kafka>
+			<name>uams_producer</name>
+			<config>conf/producer.properties</config>
+			<topic>nho.uams</topic>
+		</kafka>
+	</producers>
+
+	<gateways>
+		<http>
+			<name>http_avatar_gateway</name>
+			<server>avatar_http_server</server>
+			<path>/*</path>
+		</http>
+		<socket>
+			<name>tcp-nho-gateway</name>
+			<protocol>TCP</protocol>
+			<port>9999</port>
+			<uselengthprepender>false</uselengthprepender>
+			<workerpool>
+				<poolsize>32</poolsize>
+				<ringbuffersize>2048</ringbuffersize>
+				<threadnamepattern>Nho Messenger Worker #%d</threadnamepattern>
+			</workerpool>
+		</socket>
+		<socket>
+			<name>middle-nho-gateway</name>
+			<protocol>WEBSOCKET</protocol>
+			<port>9914</port>
+			<uselengthprepender>false</uselengthprepender>
+			<workerpool>
+				<poolsize>32</poolsize>
+				<ringbuffersize>2048</ringbuffersize>
+				<threadnamepattern>Nho Middle Worker #%d</threadnamepattern>
+			</workerpool>
+		</socket>
+	</gateways>
+
+	<lifecycles>
+		<handler>
+			<name>nho_chat_handler</name>
+			<handle>com.nho.server.NhoServer</handle>
+			
+			<bind>
+				<gateway>tcp-nho-gateway</gateway>
+				<gateway>middle-nho-gateway</gateway>
+				<!-- <gateway>udt-chat-gateway</gateway> -->
+				<!-- <gateway>websocket-chat-gateway</gateway> -->
+			</bind>
+			<variables>
+				<variable name="mysql" type="String">nho_messenger_mysql</variable>
+				<variable name="topic" type="string">nho.uams</variable>
+				<variable name="applicationId" type="String">b7d2a54c-65f9-11e6-8b77-86f30ca893d3</variable>
+				<variable name="hazelcast" type="String">nho_messenger_hazelcast</variable>
+				<variable name="mongodb" type="String">nho_messenger_mongodb</variable>
+			</variables>
+		</handler>
+		
+		<handler>
+			<name>nho_middle_handle</name>
+			<handle>com.nho.server.NhoMiddle</handle>
+			<bind>
+				<gateway>middle-nho-gateway</gateway>
+			</bind>
+			<variables>
+				
+			</variables>
+		</handler>
+		
+<!-- 		<handler> -->
+<!-- 			<name>AdminHandler</name> -->
+<!-- 			<handle>com.nho.server.AdminHandler</handle> -->
+<!-- 			<bind> -->
+<!-- 				<gateway>http_ad_gateway</gateway> -->
+<!-- 			</bind> -->
+<!-- 			<variables> -->
+<!-- 				<variable name="mongodb" type="String">nho_messenger_mongodb</variable> -->
+<!-- 			</variables> -->
+<!-- 		</handler> -->
+		
+		<handler>
+			<name>AvatarHandler</name>
+			<handle>com.nho.server.AvartarHandler</handle>
+			<bind>
+				<gateway>http_avatar_gateway</gateway>
+			</bind>
+			<variables>
+				<variable name="mysql" type="String">nho_messenger_mysql</variable>
+				
+				<variable name="avatars" type="puobject">
+					<variable name="icon_1" type="string">url_icon1</variable>
+					<variable name="icon_2" type="string">url_icon2</variable>
+					<variable name="icon_3" type="string">url_icon3</variable>
+					<variable name="icon_4" type="string">url_icon4</variable>
+					<variable name="icon_5" type="string">url_icon5</variable>
+					<variable name="icon_6" type="string">url_icon6</variable>
+					<variable name="icon_bot" type="string">url_iconbot</variable>
+				</variable>
+			</variables>
+		</handler>
+	</lifecycles>
+</mario>

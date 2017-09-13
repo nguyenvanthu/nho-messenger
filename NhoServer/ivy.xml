@@ -1,0 +1,13 @@
+<ivy-module version="2.0">
+	<info organisation="com.mario" module="mario-consumer" />
+	<configurations defaultconfmapping="default">
+		<conf name="default" />
+		<conf name="java7" extends="default" description="Java 7 dependencies" />
+		<conf name="eclipse" description="Special dependencies in Eclipse" />
+		<conf name="utest" extends="eclipse" description="Unit testing dependencies" />
+	</configurations>
+
+	<dependencies>
+		<dependency org="com.datastax.cassandra" name="cassandra-driver-core" rev="3.0.0-beta1" />
+	</dependencies>
+</ivy-module>

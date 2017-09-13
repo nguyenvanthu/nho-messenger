@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mario>
+
+	<name>Chat</name>
+
+	<datasources>
+		<mongodb>
+			<name>chat_mongodb</name>
+			<endpoint>
+				<entry>127.0.0.1:27017</entry>
+			</endpoint>
+			<credentials>
+<!-- 				<entry> -->
+<!-- 					<username>nho</username> -->
+<!-- 					<password>123456</password> -->
+<!-- 					<authdb>nho</authdb> -->
+<!-- 				</entry> -->
+			</credentials>
+		</mongodb>
+	</datasources>
+
+	<servers>
+		<http>
+			<name>chat_http_server</name>
+			<port>9304</port>
+			<options>no_sessions</options>
+		</http>
+		<rabbitmq>
+			<name>chat_rabbitmq_server</name>
+			<endpoint>
+				<entry>127.0.0.1:5672</entry>
+			</endpoint>
+			<credential>
+				<username>guest</username>
+				<password>guest</password>
+			</credential>
+			<autoreconnect>true</autoreconnect>
+		</rabbitmq>
+	</servers>
+
+	<gateways>
+		<http>
+			<name>chat_http_gateway</name>
+			<server>chat_http_server</server>
+			<path>/*</path>
+		</http>
+		<rabbitmq>
+			<name>chat_rabbitmq_gateway</name>
+			<server>chat_rabbitmq_server</server>
+			<queue>
+				<type>rpc</type>
+				<name>chat_queue</name>
+				<autoack>true</autoack>
+			</queue>
+			<workerpool>
+				<poolsize>8</poolsize>
+				<ringbuffersize>2048</ringbuffersize>
+				<threadnamepattern>Chat Worker #%d</threadnamepattern>
+			</workerpool>
+		</rabbitmq>
+	</gateways>
+
+	<lifecycles>
+		<handler>
+			<name>chat_handler</name>
+			<handle>com.nho.chat.ChatHandler</handle>
+			<bind>
+				<gateway>chat_rabbitmq_gateway</gateway>
+				<gateway>chat_http_gateway</gateway>
+			</bind>
+			<variables>
+				<variable name="mongodb" type="String">chat_mongodb</variable>
+			</variables>
+		</handler>
+	</lifecycles>
+</mario>
